@@ -71,7 +71,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: updater-${{ matrix.platform }}${{ matrix.args && '-arm64' || '' }}
+          name: updater-${{ matrix.platform }}${{ contains(matrix.args, 'aarch64') && '-arm64' || contains(matrix.args, 'x86_64') && '-x64' || '' }}
           path: |
             src-tauri/target/release/bundle/**/*.AppImage
             src-tauri/target/release/bundle/**/*.deb
