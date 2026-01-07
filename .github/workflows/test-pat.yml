@@ -1,0 +1,26 @@
+name: Test PAT
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-pat:
+    name: Test KAKEIBON_PAT
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Test PAT access to KakeiBonByRust
+        env:
+          GH_TOKEN: ${{ secrets.KAKEIBON_PAT }}
+        run: |
+          echo "Testing PAT access to KakeiBonByRust repository..."
+
+          # Test: List releases
+          echo "=== Checking releases ==="
+          gh api repos/BonoJovi/KakeiBonByRust/releases --jq '.[0:3] | .[] | "Release: \(.tag_name) - \(.name)"'
+
+          # Test: Get repository info
+          echo "=== Repository info ==="
+          gh api repos/BonoJovi/KakeiBonByRust --jq '"Repository: \(.full_name)\nVisibility: \(.visibility)\nDefault branch: \(.default_branch)"'
+
+          echo ""
+          echo "✅ PAT is working correctly!"
